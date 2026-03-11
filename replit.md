@@ -16,6 +16,47 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## Vercel Deployment (artifacts/game-hub)
+
+The game-hub artifact is configured for Vercel deployment with a Python backend and static frontend.
+
+### Structure
+```
+artifacts/game-hub/
+├── api/                    # Python serverless functions (Vercel)
+│   ├── index.py            # GET /api — health check & API info
+│   ├── games.py            # GET /api/games?genre=&search=&badge=
+│   └── stats.py            # GET /api/stats
+├── public/                 # Static assets copied into dist/
+│   ├── favicon.svg
+│   ├── site.webmanifest
+│   ├── robots.txt
+│   └── opengraph.jpg
+├── dist/                   # Production build output (gitignore in CI)
+├── src/                    # React + Vite source
+│   ├── styles.css          # All CSS styles
+│   ├── animations.js       # All JS animations
+│   └── pages/GameHub.tsx   # Main page component
+├── vercel.json             # Vercel config (build, routes, headers)
+├── requirements.txt        # Python deps (stdlib only, no pip install needed)
+└── vite.config.vercel.ts   # Vite config for Vercel (no Replit env vars)
+```
+
+### Deploy to Vercel
+1. Push the repo to GitHub
+2. Import the repo in Vercel dashboard
+3. Set **Root Directory** to `artifacts/game-hub`
+4. Build command: `npm run build:vercel`
+5. Output directory: `dist`
+6. No environment variables required
+
+### Python API Endpoints
+- `GET /api` — health check
+- `GET /api/games` — all 25 games (supports `?genre=`, `?search=`, `?badge=`)
+- `GET /api/stats` — site statistics
+
+---
+
 ## Structure
 
 ```text

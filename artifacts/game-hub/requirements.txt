@@ -1,0 +1,4 @@
+# No external packages required.
+# The Python API uses only the standard library (http.server, json, urllib.parse).
+# If you want to use Flask instead, uncomment below:
+# flask==3.1.0
