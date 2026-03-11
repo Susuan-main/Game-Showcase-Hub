@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Game Hub"
+version = "1.0.0"
+id = "artifacts/game-hub"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 23091
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/game-hub run dev"
+
+[services.env]
+PORT = "23091"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/game-hub", "run", "build"]
+publicDir = "artifacts/game-hub/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
