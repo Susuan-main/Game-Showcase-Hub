@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles.css";
+import GameModal from "../components/GameModal";
 import {
   initParticles,
   initScrollReveal,
@@ -40,8 +41,11 @@ const GAMES = [
 
 const GENRES = ["All", "Action", "Arcade", "Puzzle", "Racing", "RPG", "Shooter", "Strategy", "Horror", "Sandbox", "Fighting", "Survival", "Sports", "Adventure", "Roguelike", "Casual", "Stealth"];
 
+type Game = typeof GAMES[0];
+
 export default function GameHub() {
   const [activeGenre, setActiveGenre] = useState("All");
+  const [openGame, setOpenGame] = useState<Game | null>(null);
 
   const filteredGames = activeGenre === "All"
     ? GAMES
@@ -66,6 +70,9 @@ export default function GameHub() {
 
   return (
     <>
+      {openGame && (
+        <GameModal game={openGame} onClose={() => setOpenGame(null)} />
+      )}
       <section className="hero-section">
         <div className="hero-bg-grid" />
         <div className="hero-particles" />
@@ -132,7 +139,8 @@ export default function GameHub() {
             <article
               key={game.id}
               className="game-card"
-              style={{ "--card-glow": game.glow, "--card-accent": game.accent } as React.CSSProperties}
+              style={{ "--card-glow": game.glow, "--card-accent": game.accent, cursor: "pointer" } as React.CSSProperties}
+              onClick={() => setOpenGame(game)}
             >
               <div className="game-card-image">
                 <div
